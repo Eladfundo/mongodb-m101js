@@ -1,0 +1,1 @@
+ db.movieDetails.find({rated: 'PG-13', "awards.wins": 0, title: {$in: ["Journey to the West", "Saving Mr. Banks", "Escape from Planet Earth", "World War Z", "Man of Steel", "Iron Man 3", "Evil Dead", "A Tribute to J.J. Abrams", "Thor: The Dark World", "A Decade of Decadence, Pt. 2: Legacy of Dreams"]}}, {"title": 1}).pretty()
