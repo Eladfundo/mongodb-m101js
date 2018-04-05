@@ -1,0 +1,1 @@
+db.companies.find({$or: [{overview: {"$regex": "wiki"}}, {tag_list: {$regex: "wiki"}}]}, {name: 1}).pretty()
