@@ -1,0 +1,18 @@
+db.companies.aggregate( [
+    { $match: {"founded_year": { $eq: 2004 } } },
+    { $project: { name: 1, funding_rounds: 1, _id: 0 } },
+    { $unwind: "$funding_rounds" },
+    { $group: {
+        _id: "$name",
+        no_of_funding_rounds: { $sum: 1 },
+        average_per_round: { $avg: "$funding_rounds.raised_amount" }
+    } },
+    { $project: {
+      name: "$_id",
+      no_of_funding_rounds: 1,
+      average_per_round: 1,
+      _id: 0
+    } },
+    { $match: {"no_of_funding_rounds": { $gte: 5 } } },
+    { $sort: { "average_per_round" : 1 } }
+] )

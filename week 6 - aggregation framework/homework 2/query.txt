@@ -1,0 +1,29 @@
+db.grades.aggregate( [
+    { $match: { "scores.type": { $in: [ "homework", "exam" ] } } },
+    { $project: { student_id: 1, class_id: 1, scores: 1, _id: 0 } },
+    { $unwind: "$scores" },
+    { $match: { "scores.type": { $in: [ "homework", "exam" ] } } },
+    { $group: {
+        _id: {
+          student_id: "$student_id",
+          class_id: "$class_id"
+        },
+        student_average: { $avg: "$scores.score" }
+    } },
+    { $project: {
+      student_id: "$_id.student_id",
+      student_average: "$student_average",
+      class_id: "$_id.class_id",
+      _id: 0
+    } },
+    { $group: {
+      _id: "$class_id",
+      class_average: {$avg: "$student_average"}
+    } },
+    { $project: {
+      class_id: "$_id",
+      class_average: 1,
+      _id: 0
+    } },
+    { $sort: { "class_average": -1 } }
+] )

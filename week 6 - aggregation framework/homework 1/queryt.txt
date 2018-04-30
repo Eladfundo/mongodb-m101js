@@ -1,0 +1,14 @@
+db.companies.aggregate( [
+    { $match: { "relationships.person.permalink": { $eq: "eric-di-benedetto" } } },
+    { $project: { name: 1, relationships: 1, _id: 0 } },
+    { $unwind: "$relationships" },
+    { $match: { "relationships.person.permalink": { $eq: "eric-di-benedetto" } } },
+    { $group: {
+        _id: "$relationships.person.permalink",
+        companies: { $addToSet: "$name" }
+    } },
+    { $project: {
+      _id: "$relationships.person.permalink",
+      no_of_companies: { $size: "$companies" }
+    } }
+] )
