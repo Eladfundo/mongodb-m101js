@@ -1,0 +1,20 @@
+db.cart.aggregate( [
+  { $match: { userId: "558098a65133816958968d88" } },
+  { $project: {
+    items: 1,
+    _id: 0
+  } },
+  { $unwind: "$items" },
+  { $project: {
+    _id: "$items._id",
+    title: "$items.title",
+    slogan: "$items.slogan",
+    description: "$items.descrption",
+    stars: "$items.stars",
+    category: "$items.category",
+    img_url: "$items.img_url",
+    price: "$items.price",
+    reviews: "$items.reviews",
+    quantity: "$items.quantity"
+  } }
+] ).pretty();

@@ -1,0 +1,1 @@
+db.cart.update({ userId: "558098a65133816958968d88", items: { $elemMatch: { _id: 16 } } }, {$set: { "items.$.quantity": 0 }});
